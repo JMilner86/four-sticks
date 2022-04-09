@@ -53,31 +53,64 @@ const init = () => {
 
 
 const viewDepartments = () => {
-
+    db.query(`SELECT * FROM departments`, (req, res) => {
+        console.table(res)
+    })
 };
 
 const viewEmployees = () => {
-
+    db.query(`SELECT * FROM employees`, (req, res) => {
+        console.table(res)
+    })
 };
 
 const viewRoles = () => {
-
+    db.query(`SELECT * FROM roles`, (req, res) => {
+        console.table(res)
+    })
 };
 
 const addDepartment = () => {
-
+        inquirer.prompt({
+        type: 'input',
+        message: 'Please add department name'
+    })
+    .then(function (result) {
+        db.query(`INSERT INTO  departments ?`, result, (req, res) => {
+            console.table(res)
+        })
+    })
 };
 
 const addEmployee = () => {
-
+    inquirer.prompt({
+        type: 'input',
+        message: 'Please add employee name'
+    })
+    .then(function (result) {
+        db.query(`INSERT INTO  employees ?`, result, (req, res) => {
+            console.table(res)
+        })
+    })
 };
 
 const addRole = () => {
-
+    inquirer.prompt({
+        type: 'input',
+        message: 'Please add role'
+    })
+    .then(function (result) {
+        db.query(`INSERT INTO  roles ?`, result, (req, res) => {
+            console.table(res)
+        })
+    })
 };
 
 const updateRole = () => {
-
+    inquirer.prompt({
+        type: 'choices',
+        message: 'Please update employee role'
+    })
 };
 
 
