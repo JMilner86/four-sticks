@@ -83,10 +83,24 @@ const addDepartment = () => {
 };
 
 const addEmployee = () => {
-    inquirer.prompt({
-        type: 'input',
-        message: 'Please add employee name'
-    })
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Please enter employee first name'
+        },
+        {
+            type: 'input',
+            message:'Please enter employee last name'
+        },
+        {
+            type: 'input',
+            message:'Please enter employee role'
+        },
+        {
+            type: 'input',
+            message: 'Please enter employee manager ID'
+        }
+    ])
     .then(function (result) {
         db.query(`INSERT INTO  employees ?`, result, (req, res) => {
             console.table(res)
@@ -95,10 +109,21 @@ const addEmployee = () => {
 };
 
 const addRole = () => {
-    inquirer.prompt({
-        type: 'input',
-        message: 'Please add role'
-    })
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Please add role'
+        },
+        {
+            input: 'input',
+            message: 'Please input the salary for this role'
+        },
+        {
+            type: 'input',
+            message: 'Please enter Department ID for role'
+        }
+            
+    ])
     .then(function (result) {
         db.query(`INSERT INTO  roles ?`, result, (req, res) => {
             console.table(res)

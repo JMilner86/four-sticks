@@ -22,8 +22,10 @@ CREATE TABLE employees (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
+    salary_id INTEGER,
     role_id INTEGER,
     manager_id INTEGER,
+    CONSTRAINT fk_salary FOREIGN KEY(salary_id) REFERENCES roles(salary) ON DELETE SET NULL,
     CONSTRAINT fk_role_id FOREIGN KEY(role_id) REFERENCES roles(id) ON DELETE SET NULL,
     CONSTRAINT fk_manager_id FOREIGN KEY(id) REFERENCES roles(title) ON DELETE SET NULL
 );
