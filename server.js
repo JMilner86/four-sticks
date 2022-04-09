@@ -1,9 +1,13 @@
 const inquirer = require('inquirer');
 const express = require('express');
-const PORT = process.env.PORT || 3001;
 const db = require('./db/connection');
 const { listenerCount } = require('process');
-const app = express();
+const server = express();
+const table = require('console.table');
+
+
+server.use(express.urlencoded({ extended: false}));
+server.use(express.json());
 
 
 
@@ -11,8 +15,8 @@ const init = () => {
     const options = () => {
         inquirer.prompt([
             {
-                type: list,
-                name: 'action',
+                type: 'list',
+                name: 'options',
                 choices: [
                     'View all departments',
                     'View all roles', 
@@ -49,12 +53,13 @@ const init = () => {
             }
         })
     }
+    options();
 };
 
 
 const viewDepartments = () => {
     db.query(`SELECT * FROM departments`, (req, res) => {
-        console.table(res)
+        console.table(res);
     })
 };
 
