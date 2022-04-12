@@ -58,21 +58,39 @@ const init = () => {
 
 
 const viewDepartments = () => {
-    db.query(`SELECT * FROM departments`, (req, res) => {
-        console.table(res);
-    })
+    const sql = `SELECT * FROM departments`;
+    db.query(sql, (err, rows) => {
+        if(err) {
+            console.log(err.message);
+            return;
+        }
+        console.table(rows);
+        // restart();
+    });
 };
 
 const viewEmployees = () => {
-    db.query(`SELECT * FROM employees`, (req, res) => {
-        console.table(res)
-    })
+    const sql = `SELECT * FROM employees`;
+    db.query(sql, (err, rows) => {
+        if(err) {
+            console.log(err.message);
+            return;
+        }
+        console.table(rows);
+        // restart();
+    });
 };
 
 const viewRoles = () => {
-    db.query(`SELECT * FROM roles`, (req, res) => {
-        console.table(res)
-    })
+    const sql = `SELECT * FROM roles`;
+    db.query(sql, (err, rows) => {
+        if(err) {
+            console.log(err.message);
+            return;
+        }
+        console.table(rows);
+        // restart();
+    });
 };
 
 const addDepartment = () => {
