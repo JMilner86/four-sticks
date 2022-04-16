@@ -65,7 +65,7 @@ const viewDepartments = () => {
 };
 
 const viewRoles = () => {
-    const sql = `SELECT roles.id, roles.title, roles.salary, roles.department_id, departments.title
+    const sql = `SELECT roles.id, roles.title, roles.salary, roles.department_id
     FROM roles
     INNER JOIN departments ON roles.department_id = departments.id`;
     db.query(sql, (err, rows) => {
@@ -131,7 +131,7 @@ const addEmployee = () => {
         },
         {
             type: 'input',
-            message:'Please enter employee role',
+            message:'Please enter employee role ID',
             name: 'role_id'
         },
         {
