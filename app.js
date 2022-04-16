@@ -80,9 +80,13 @@ const viewRoles = () => {
 };
 
 const viewEmployees = () => {
-    const sql = `SELECT *
-    FROM employees
-    `;
+    const sql = `SELECT e.id, e.first_name, e.last_name,
+    roles.title, roles.salary,
+    concat(m.first_name, ' ', m.last_name) manager
+    FROM employees e
+    INNER JOIN roles ON e.role_id = roles.id
+    INNER JOIN departments ON roles.department_id = departments.id
+    LEFT JOIN employees m ON m.id = e.manager_id`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err.message);
@@ -94,41 +98,61 @@ const viewEmployees = () => {
 };
 
 const addDepartment = () => {
-        inquirer.prompt({
+        inquirer.prompt([{
         type: 'input',
+        name: 'new_department',
         message: 'Please add department name'
-    })
-    .then(function (result) {
-        db.query(`INSERT INTO  departments ?`, result, (req, res) => {
-            console.table(res)
-        })
-    })
+    }])
+    .then(input => {
+        const sql = `INSERT INTO departments(title) VALUES (?)`;
+        const params = input.new_department;
+        db.query(sql, params, (err, result) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            console.log(`Added ${params} to the database`);
+            init();
+        });
+    });
+
 };
 
 const addEmployee = () => {
     inquirer.prompt([
         {
             type: 'input',
-            message: 'Please enter employee first name'
+            message: 'Please enter employee first name',
+            name: 'first_name'
         },
         {
             type: 'input',
-            message:'Please enter employee last name'
+            message:'Please enter employee last name',
+            name: 'last_name'
         },
         {
             type: 'input',
-            message:'Please enter employee role'
+            message:'Please enter employee role',
+            name: 'role_id'
         },
         {
             type: 'input',
-            message: 'Please enter employee manager ID'
+            message: 'Please enter employee manager ID',
+            name: 'manager_id'
         }
     ])
-    .then(function (result) {
-        db.query(`INSERT INTO  employees ?`, result, (req, res) => {
-            console.table(res)
-        })
-    })
+    .then(input => {
+        const sql = `INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`;
+        const params = [input.first_name, input.last_name, input.role_id, input.manager_id];
+        db.query(sql, params, (err, result) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            console.log(`Added ${params} to the database`);
+            init();
+        });
+    });
 };
 
 const addRole = () => {
