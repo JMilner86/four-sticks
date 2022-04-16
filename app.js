@@ -65,7 +65,7 @@ const viewDepartments = () => {
 };
 
 const viewRoles = () => {
-    const sql = `SELECT roles.id, roles.title, roles.salary
+    const sql = `SELECT roles.id, roles.title, roles.salary, roles.department_id, departments.title
     FROM roles
     INNER JOIN departments ON roles.department_id = departments.id`;
     db.query(sql, (err, rows) => {
