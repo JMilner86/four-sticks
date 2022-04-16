@@ -60,31 +60,36 @@ const viewDepartments = () => {
             return;
         }
         console.table(rows);
-        // restart();
-    });
-};
-
-const viewEmployees = () => {
-    const sql = `SELECT * FROM employees`;
-    db.query(sql, (err, rows) => {
-        if(err) {
-            console.log(err.message);
-            return;
-        }
-        console.table(rows);
-        // restart();
+        init();
     });
 };
 
 const viewRoles = () => {
-    const sql = `SELECT * FROM roles`;
+    const sql = `SELECT * 
+    FROM roles
+    LEFT JOIN departments 
+    ON roles.department_id = departments.id`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err.message);
             return;
         }
         console.table(rows);
-        // restart();
+        init();
+    });
+};
+
+const viewEmployees = () => {
+    const sql = `SELECT *
+    FROM employees
+    `;
+    db.query(sql, (err, rows) => {
+        if(err) {
+            console.log(err.message);
+            return;
+        }
+        console.table(rows);
+        init();
     });
 };
 
