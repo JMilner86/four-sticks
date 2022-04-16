@@ -65,10 +65,9 @@ const viewDepartments = () => {
 };
 
 const viewRoles = () => {
-    const sql = `SELECT * 
+    const sql = `SELECT roles.id, roles.title, roles.salary
     FROM roles
-    LEFT JOIN departments 
-    ON roles.department_id = departments.id`;
+    INNER JOIN departments ON roles.department_id = departments.id`;
     db.query(sql, (err, rows) => {
         if(err) {
             console.log(err.message);
@@ -159,31 +158,83 @@ const addRole = () => {
     inquirer.prompt([
         {
             type: 'input',
-            message: 'Please add role'
+            message: 'Please add role',
+            name: 'title'
         },
         {
             input: 'input',
-            message: 'Please input the salary for this role'
+            message: 'Please input the salary for this role',
+            name: 'salary'
         },
         {
             type: 'input',
-            message: 'Please enter Department ID for role'
+            message: 'Please enter Department ID for role',
+            name: 'department_id'
         }
             
     ])
-    .then(function (result) {
-        db.query(`INSERT INTO  roles ?`, result, (req, res) => {
-            console.table(res)
-        })
-    })
+    .then(input => {
+        const sql = `INSERT INTO roles(title, department_id, salary) VALUES (?,?,?)`;
+        const params = [input.title, input.department_id, input.salary];
+        db.query(sql, params, (err, result) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            console.log(`Added ${params[0]} to the database`);
+            init();
+        });
+    });
 };
 
 const updateRole = () => {
-    inquirer.prompt({
-        type: 'choices',
-        message: 'Please update employee role'
-    })
-};
+    const employees = [];
+    db.query(`SELECT employees.id, employees.first_name, employees.last_name FROM employees`, (err, result) => {
+        if(err) {
+            console.log(err);
+            return;
+        }
 
+        result.forEach(item => {
+            const name = `${item.first_name} ${item.last_name}`;
+            employees.push(name);
+        });
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'update',
+                message: `Who's role do you want to update?`,
+                choices: employees
+            },
+            {
+                type: 'input',
+                name: 'new_role',
+                message: `What is their new role id?`,
+                validate: input => {
+                    if(!isNaN(input)) {
+                        return true;
+                    } else {
+                        console.log(' Please enter a number');
+                        return false;
+                    };
+                }
+            }
+        ]).then(input => {
+            const split = input.update.split(' ');
+            const sql = `UPDATE employees
+                         SET role_id = ${input.new_role}
+                         WHERE first_name = '${split[0]}'
+                         AND last_name = '${split[1]}'`
+            db.query(sql, (err, result) => {
+                if(err) {
+                    console.log(err);
+                }
+                console.log(`Updated ${input.update}'s role`);
+                init();
+            });
+        });
+    });
+};
 
 init();
