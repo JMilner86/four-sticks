@@ -1,3 +1,5 @@
+-- This whole file adds to previously created tables in schema.sql
+
 INSERT INTO departments (title)
 VALUES 
 ('Singers'),

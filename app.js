@@ -4,7 +4,7 @@ const { listenerCount } = require('process');
 const table = require('console.table');
 
 
-
+// Begins running the application, uses inquirer to ask user questions and retrieve responses
 const init = () => {
     const options = () => {
         inquirer.prompt([
@@ -51,7 +51,7 @@ const init = () => {
     options();
 };
 
-
+// Allows user to view all the departments in the table
 const viewDepartments = () => {
     const sql = `SELECT * FROM departments`;
     db.query(sql, (err, rows) => {
@@ -63,7 +63,7 @@ const viewDepartments = () => {
         init();
     });
 };
-
+// Allows user to view the roles table
 const viewRoles = () => {
     const sql = `SELECT roles.id, roles.title, roles.salary, roles.department_id
     FROM roles
@@ -77,7 +77,7 @@ const viewRoles = () => {
         init();
     });
 };
-
+// allows user to view the employees table
 const viewEmployees = () => {
     const sql = `SELECT e.id, e.first_name, e.last_name,
     roles.title, roles.salary,
@@ -95,7 +95,7 @@ const viewEmployees = () => {
         init();
     });
 };
-
+// Allows user to add a department to table
 const addDepartment = () => {
         inquirer.prompt([{
         type: 'input',
@@ -116,7 +116,7 @@ const addDepartment = () => {
     });
 
 };
-
+// Allows user to add an employee to the table
 const addEmployee = () => {
     inquirer.prompt([
         {
@@ -153,7 +153,7 @@ const addEmployee = () => {
         });
     });
 };
-
+// Allows use to add a role to the table
 const addRole = () => {
     inquirer.prompt([
         {
@@ -186,7 +186,7 @@ const addRole = () => {
         });
     });
 };
-
+// Allows user to update employees role in the table
 const updateRole = () => {
     const employees = [];
     db.query(`SELECT employees.id, employees.first_name, employees.last_name FROM employees`, (err, result) => {
@@ -236,5 +236,5 @@ const updateRole = () => {
         });
     });
 };
-
+// Begins the application
 init();
